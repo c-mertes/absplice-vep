@@ -39,7 +39,9 @@ jobs:
       - name: Lint perl module
         run: |
           micromamba install perl-yaml perl-module-build perl-file-sharedir-install \
-                perl-config-tiny perl-list-someutils perl-ppi perl-pod-plaintext perl-readonly
+                perl-config-tiny perl-list-someutils perl-ppi perl-pod-plaintext \
+                perl-readonly perl-module-pluggable perl-test-object perl-test-subcalls \
+                perl-class-inspector perl-test-nowarnings perl-capture-tiny perl-file-sharedir
           echo "yes" | cpan
           cpan CPAN::DistnameInfo
           cpan Perl::Critic
