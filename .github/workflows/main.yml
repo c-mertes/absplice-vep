@@ -27,11 +27,12 @@ jobs:
         run: |
           scores="./tests/TestAbSpliceScores.tsv.gz"
           tissues="Adipose_Subcutaneous|Artery_Tibial|Adipose_Visceral_Omentum|Adrenal_Gland"
+          tissuesExclude="Adipose_Visceral_Omentum|Testis"
 
           vep --dir_plugin . --format vcf --vcf --verbose --species homo_sapiens \ 
                 --assembly GRCh37 --database --port 3337 \
                 --input_file ./tests/TestVariants.vcf --output_file vep.anno.vcf.gz \
-                --plugin AbSplice,scores="$scores",cutoff=0.4,tissues="$tissues"
+                --plugin AbSplice,scores="$scores",cutoff=0.4,tissues="$tissues",maxScoreExclude="$tissuesExclude"
 
           zcat vep.anno.vcf.gz
 
