@@ -15,13 +15,11 @@ jobs:
         uses: mamba-org/provision-with-micromamba@v10
 
       - name: Check test environment
-        shell: bash -l {0}
         run: |
           micromamba --version
           micromamba env list
       
       - name: Run end-to-end pipeline
-        shell: bash -l {0}
         run: |
           score="./tests/TestAbSpliceScores.tsv.gz"
           tissue="Adipose_Subcutaneous|Artery_Tibial|Adipose_Visceral_Omentum|Adrenal_Gland"
@@ -34,7 +32,6 @@ jobs:
           zcat vep.anno.vcf.gz
 
       - name: Lint perl module
-        shell: bash -l {0}
         run: |
           cpan Perl::Critic
           perl -e 'use Perl::Critic;
