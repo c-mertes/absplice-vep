@@ -258,20 +258,5 @@ sub parse_data {
   };
 }
 
-sub myDebug {
-  my ($self, $info, $data) = @_;
-  print STDERR "\nDebug Info: $info,\t";
-  if(ref($data) eq "HASH"){
-    my %data_hash = %{$data};
-    print STDERR "HASH:\n";
-    print STDERR map { "\t$_ => $data_hash{$_}\n" } keys %data_hash;
-  } elsif(ref($data) eq "ARRAY"){
-    print STDERR "ARRAY:\n\t".join(", ", @{$data})."\n";
-  } else {
-    print STDERR "STRING:\n\t$data\n";
-  }
-  print STDERR "\n";
-}
-
 1;
 
