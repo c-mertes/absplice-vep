@@ -29,7 +29,7 @@ jobs:
           tissues="Adipose_Subcutaneous|Artery_Tibial|Adipose_Visceral_Omentum|Adrenal_Gland"
           tissuesExclude="Adipose_Visceral_Omentum|Testis"
 
-          vep --dir_plugin . --format vcf --vcf --verbose --species homo_sapiens \
+          vep --dir_plugin . --format vcf --vcf --verbose --species homo_sapiens --fork 10 --no_stats \
                 --assembly GRCh37 --database --port 3337 --compress_output gzip \
                 --input_file ./tests/TestVariants.vcf --output_file vep.anno.vcf.gz \
                 --plugin AbSplice,scores="$scores",cutoff=0.4,tissues="$tissues",maxScoreExclude="$tissuesExclude"
@@ -38,7 +38,8 @@ jobs:
 
       - name: Lint perl module
         run: |
-          micromamba install perl-yaml perl-module-build
+          micromamba install perl-yaml perl-module-build perl-file-sharedir-install \
+                perl-config-tiny perl-list-someutils perl-ppi perl-pod-plaintext perl-readonly
           echo "yes" | cpan
           cpan Perl::Critic
           perl -e 'use Perl::Critic;
