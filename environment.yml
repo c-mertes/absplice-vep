@@ -1,0 +1,6 @@
+name: absplice_vep_test
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - ensembl-vep

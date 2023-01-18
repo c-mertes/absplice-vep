@@ -1,0 +1,53 @@
+name: Build
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -e -l {0}
+
+    steps:
+      - uses: actions/checkout@v2
+              
+      - name: Setup environment with micromamba
+        uses: mamba-org/provision-with-micromamba@v10
+
+      - name: Check test environment
+        run: |
+          micromamba --version
+          micromamba env list
+          micromamba list
+      
+      - name: Run end-to-end pipeline
+        run: |
+          scores="./tests/TestAbSpliceScores.tsv.gz"
+          tissues="Adipose_Subcutaneous|Artery_Tibial|Adipose_Visceral_Omentum|Adrenal_Gland"
+          tissuesExclude="Adipose_Visceral_Omentum|Testis"
+
+          vep --dir_plugin . --format vcf --vcf --verbose --species homo_sapiens --fork 10 --no_stats \
+                --assembly GRCh37 --database --port 3337 --compress_output gzip \
+                --input_file ./tests/TestVariants.vcf --output_file vep.anno.vcf.gz \
+                --plugin AbSplice,scores="$scores",cutoff=0.4,tissues="$tissues",maxScoreExclude="$tissuesExclude"
+
+          zcat vep.anno.vcf.gz
+
+      - name: Lint perl module
+        run: |
+          micromamba install perl-yaml perl-module-build perl-file-sharedir-install \
+                perl-config-tiny perl-list-someutils perl-ppi perl-pod-plaintext \
+                perl-readonly perl-module-pluggable perl-test-object perl-test-subcalls \
+                perl-class-inspector perl-test-nowarnings perl-capture-tiny perl-file-sharedir
+          echo "yes" | cpan
+          cpan CPAN::DistnameInfo
+          cpan Perl::Critic
+          perl -e 'use Perl::Critic;
+            my $critic = Perl::Critic->new();
+            my @violations = $critic->critique("./AbSplice.pm");
+            print @violations;'
+
+
