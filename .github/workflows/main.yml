@@ -41,6 +41,7 @@ jobs:
           micromamba install perl-yaml perl-module-build perl-file-sharedir-install \
                 perl-config-tiny perl-list-someutils perl-ppi perl-pod-plaintext perl-readonly
           echo "yes" | cpan
+          cpan CPAN::DistnameInfo
           cpan Perl::Critic
           perl -e 'use Perl::Critic;
             my $critic = Perl::Critic->new();
