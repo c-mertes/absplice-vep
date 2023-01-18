@@ -1,0 +1,16 @@
+##fileformat=VCFv4.2
+##fileDate=20230117
+##contig=<ID=chr1, length=459153117,assembly=hg19,species="Homo sapiens">
+##contig=<ID=chr6, length=58249090, assembly=hg19,species="Homo sapiens">
+##contig=<ID=chr15,length=53002873, assembly=hg19,species="Homo sapiens">
+##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	S1
+chr1	2115	.	C	G	99	.	.	GT	1/1
+chr1	249153115	.	C	T	99	.	.	GT	0/1
+chr1	249153116	.	C	A	99	.	.	GT	0/1
+chr1	359153117	.	T	A	99	.	.	GT	1/1
+chr6	49089	.	C	G	99	.	.	GT	1/1
+chr6	28249090	.	A	G	99	.	.	GT	0/1
+chr15	23002451	.	T	A	99	.	.	GT	0/1
+chr15	23002872	.	T	A	99	.	.	GT	0/1
+chr15	23002873	.	A	G	99	.	.	GT	0/1
