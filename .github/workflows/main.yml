@@ -1,0 +1,41 @@
+name: Build
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+              
+      - name: Setup environment with micromamba
+        uses: mamba-org/provision-with-micromamba@v10
+
+      - name: Check test environment
+        shell: bash -l {0}
+        run: |
+          micromamba --version
+          micromamba env list
+      
+      - name: Run end-to-end pipeline
+        shell: bash -l {0}
+        run: |
+          score="./tests/TestAbSpliceScores.tsv.gz"
+          tissue="Adipose_Subcutaneous|Artery_Tibial|Adipose_Visceral_Omentum|Adrenal_Gland"
+
+          vep --dir_plugin . --format vcf --vcf --verbose --species homo_sapiens \
+            --assembly GRCh37 --database --port 3337 \
+            --input ./tests/variants.vcf --output vep.anno.vcf.gz \
+            --plugin AbSplice,scores=$score,tissues="$tissue",cutoff=0.8
+
+          zcat vep.anno.vcf.gz
+
+      - name: Lint perl module
+        shell: bash -l {0}
+        run: |
+          cpan Perl::Critic
+          perl -e 'use Perl::Critic;
+            my $critic = Perl::Critic->new();
+            my @violations = $critic->critique($file);
+            print @violations;'
+
+
