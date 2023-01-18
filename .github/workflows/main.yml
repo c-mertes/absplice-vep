@@ -25,11 +25,13 @@ jobs:
       
       - name: Run end-to-end pipeline
         run: |
-          vep --dir_plugin . --format vcf --vcf --verbose --species homo_sapiens --assembly GRCh37 --database --port 3337 --input ./tests/variants.vcf --output vep.anno.vcf.gz --plugin AbSplice,scores="./tests/TestAbSpliceScores.tsv.gz",tissues="Adipose_Subcutaneous|Artery_Tibial|Adipose_Visceral_Omentum|Adrenal_Gland",cutoff=0.8
+          vep --dir_plugin . --format vcf --vcf --verbose --species homo_sapiens --assembly GRCh37 --database --port 3337 --input ./tests/variants.vcf --output vep.anno.vcf.gz --plugin AbSplice,scores='./tests/TestAbSpliceScores.tsv.gz',tissues='Adipose_Subcutaneous|Artery_Tibial|Adipose_Visceral_Omentum|Adrenal_Gland',cutoff=0.8
           zcat vep.anno.vcf.gz
 
       - name: Lint perl module
         run: |
+          micromamba install perl-yaml perl-module-build
+          echo "yes" | cpan
           cpan Perl::Critic
           perl -e 'use Perl::Critic;
             my $critic = Perl::Critic->new();
